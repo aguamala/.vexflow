@@ -1,0 +1,35 @@
+# Copyright 2025 aguamala
+# SPDX-License-Identifier: Apache-2.0
+
+---
+name: VEX Triage
+
+on:
+  issue_comment:
+    types: [created]
+
+permissions: {}
+
+jobs:
+  update:
+    if: startsWith(github.event.comment.body, '/not_affected') || startsWith(github.event.comment.body, '/affected') || startsWith(github.event.comment.body, '/fixed') || startsWith(github.event.comment.body, '/under_investigation')
+    runs-on: ubuntu-latest
+
+    permissions:
+      id-token: write
+      attestations: write
+      contents: read
+      issues: write
+
+    steps:
+      - name: Setup vexflow
+        uses: carabiner-dev/actions/install/vexflow@0ea03c7e668331be3038c6c4449e9131f142d366
+
+      - name: Process triage commands
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          vexflow update \
+            --repo aguamala/baseline-init \
+            --branch main \
+            --scan=false
