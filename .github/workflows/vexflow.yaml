@@ -22,8 +22,17 @@ jobs:
       issues: write
 
     steps:
-      - name: Setup vexflow
-        uses: carabiner-dev/actions/install/vexflow@0ea03c7e668331be3038c6c4449e9131f142d366
+      - name: Setup Go
+        uses: actions/setup-go@4a3601121dd01d1626a1e23e37211e3254c1c06c
+        with:
+          go-version: "1.26"
+          cache: false
+
+      - name: Build vexflow from fix branch
+        run: |
+          git clone --depth=1 --branch fix-merge-statements-before-publish \
+            https://github.com/deobieta/vexflow /tmp/vexflow-src
+          cd /tmp/vexflow-src && go build -o /usr/local/bin/vexflow .
 
       - name: Process triage commands
         env:
