@@ -15,6 +15,10 @@ jobs:
     if: startsWith(github.event.comment.body, '/not_affected') || startsWith(github.event.comment.body, '/affected') || startsWith(github.event.comment.body, '/fixed') || startsWith(github.event.comment.body, '/under_investigation')
     runs-on: ubuntu-latest
 
+    concurrency:
+      group: vexflow-${{ github.repository }}
+      cancel-in-progress: false
+
     permissions:
       id-token: write
       attestations: write
