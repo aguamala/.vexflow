@@ -45,4 +45,4 @@ jobs:
           vexflow update \
             --repo aguamala/baseline-init \
             --branch main \
-            --scan=false
+            --scan=true
